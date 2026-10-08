@@ -1,0 +1,246 @@
+/* применяется ко всем элементам и сбрасывает бобавленнные от браузера отступы */
+* {
+  margin: 0; /*внешние отступы*/
+  padding: 0; /*внутренние отступы*/
+  box-sizing: border-box; /*меняет логику подсчета ширины*/
+}
+/*офрмление всего что внутри*/
+body {
+  font-family: Arial, sans-serif;
+  color: #5b4436;
+  background: #f7eee5;
+}
+/*обёртка для контента. Он ограничивает ширину и центрирует всё содержимое*/
+.container {
+  max-width: 1200px; /*max-width в отличие от width гоорин не шире 1200 еслиэеран уже он одаптируется*/
+  margin: 0 auto;
+  padding: 0 20px;  /*по бокам 20px, чтобы на телефоне текст не прилипал к краю*/
+}
+
+.header {
+  background: #3b2416;
+  color: #fff;
+  padding: 18px 0;
+  position: sticky; /*обычный элемент едет вверх при скролле и уходит за экран. А со sticky он доезжает до top: 0 и там остаётся — как приклеенный.*/
+  top: 0;  /*прилипает к верху экрана*/
+  z-index: 100; /*лежит поверх других элементов*/
+}
+/*класс внутри шапки, располагает логотип слева, корзину справа*/
+.header-inner {
+  display: flex; /*когда родителю даёшь display: flex, его дети встают в ряд. Дальше командуешь, как их разложить: justify-content - по горизонтали*/
+  justify-content: space-between; /*разводит по разным сторонам*/
+  align-items: center; /*выравнивание по вертикали по центру*/
+}
+.logo-img{
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+.logo {
+  color: #fff;
+  text-decoration: none; /*убирает подчеркивания*/
+  font-size: 22px;
+  font-weight: 700;
+  font-family: Georgia, serif;
+}
+/*корзина в углу*/
+.cart-icon {
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.1); /*прозрачность на 10%*/
+  padding: 8px 16px; /*8 сверху/снизу, 16 по бокам*/
+  border-radius: 20px;
+}
+
+/* товары и корзина */
+.main-layout {
+  display: grid; /*таблица из строк и колонок*/
+  grid-template-columns: 1fr 320px; /* слева товары, справа корзина */
+  gap: 30px; /*расстояние между колонками*/
+  padding-top: 40px;
+  padding-bottom: 60px;
+  align-items: start; /*Дети прижаты к верху, иначе растянутся на всю высоту*/
+}
+
+.section-title {
+  font-size: 32px;
+  font-family: Georgia, serif;
+  margin-bottom: 30px; /*отступ снизу заголовка до товаров*/
+}
+
+/* сетка товаров */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /*3 колонки равной ширины*/
+  gap: 25px;
+}
+
+/*Карточка товара */
+.product-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden; /*Обрезает всё, что вылезает важно для картинки сверху, чтобы она не выходила за скругления*/
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  display: flex;          
+  flex-direction: column; /* Дети встают сверху вниз*/
+  transition: transform 0.3s, box-shadow 0.3s; /*Если transform или box-shadow изменятся — плавно за 0.3 секунды». Без transition изменения происходят мгновенно (резко)*/
+}
+/*что произойдет если навести на карту мышку*/
+.product-card:hover {
+  transform: translateY(-6px); /*Сдвигает карточку вверх на 6px (минус = вверх)*/
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12); /*Тень становится сильнее*/
+}
+/*кратинка на карте*/
+.product-img {
+  width: 100%; /*растяжение на всю ширину*/
+  height: 180px;
+  object-fit: cover; /*Обрезает картинку, заполняя область без искажения*/
+  display: block; /*Убирает лишние отступы (у <img> они бывают по умолчанию)*/
+}
+
+.product-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /*Чтобы кнопка «Купить» была прижата к низу у всех карточек одинаково, даже если описания разной длины.*/
+}
+
+.product-title {
+  font-size: 19px;
+  margin-bottom: 8px;
+  color: #3b2416;
+}
+
+.product-desc {
+  font-size: 14px;
+  color: #7a6a5f;
+  line-height: 1.5; /*Межстрочный интервал*/
+  margin-bottom: 14px;
+  flex-grow: 1; /* прижимает цену и кнопку вниз */
+}
+
+.product-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #c08a5a;
+  margin-bottom: 12px; /*отступ внизу*/
+}
+/*кнопка купить*/
+.buy-btn {
+  background: #3b2416;
+  color: #fff;
+  border: none; 
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 15px;
+  cursor: pointer; /*курсор становится ручкой при наведении*/
+  transition: background 0.2s; /*плавная смна цвета*/
+  font-weight: 600;
+}
+/*наведение на кнопку*/
+.buy-btn:hover {
+  background: #c08a5a; /*на этот цвет меняется*/
+}
+
+.buy-btn:active {
+  transform: scale(0.97); /*при нажатии на кнопку она чуть сжиамется, ощущуение нажатия*/
+}
+
+/*Корзина*/
+.cart {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  position: sticky;   /* прилипает при скролле */
+  top: 90px;
+}
+
+.cart-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+  font-family: Georgia, serif;
+}
+/*список товаров в корзине*/
+.cart-items {
+  max-height: 300px;
+  overflow-y: auto; /*если много товаров вертиакальная прокрутка*/
+  margin-bottom: 16px;
+}
+/*пусто в корзине*/
+.cart-empty {
+  color: #a89889;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}
+/*строка в корзине*/
+.cart-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  padding: 10px 0; /*верх низ*/
+  /*border-bottom: 1px solid #f0e6dc; /*линия внизу*/
+}
+
+.cart-row-name {
+  color: #3b2416;
+}
+
+.cart-row-price {
+  font-weight: 700;
+  color: #c08a5a;
+}
+/*итоговая сумма*/
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 700;
+  padding-top: 16px;
+  border-top: 2px solid #f0e6dc;
+  margin-bottom: 14px;
+}
+
+#cart-total {
+  color: #c08a5a;
+}
+/*кнопка очистить*/
+.clear-btn {
+  width: 100%;
+  background: transparent;
+  color: #a89889;
+  border: 1px solid #e6d6c6;
+  padding: 10px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.clear-btn:hover {
+  background: #faf6f2;
+  color: #3b2416;
+}
+
+/* адаптив на планшете */
+@media (max-width: 1000px) {
+  .main-layout {
+    grid-template-columns: 1fr; /* корзина уходит под товары все в одну строку*/
+  }
+  .cart {
+    position: static; /*По умолчанию. Стоит в потоке, никуда не двигается*/
+  }
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /*в ту колонкас*/
+  }
+}
+
+/* адаптив на телефоне */
+@media (max-width: 600px) {
+  .products-grid {
+    grid-template-columns: 1fr; /*вообще все в одну колонку*/
+  }
+  .section-title {
+    font-size: 26px; 
+  }
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Котофейня</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-inner">
+      <img src="logo1.jpg" alt="logo-img"class ="logo-img">
+      <a href="/" class="logo">CoffeeCat</a>
+      <div class="cart-icon">
+        Корзина: <span id="cart-count">0</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-layout">
+
+    <section class="products">
+      <h1 class="section-title">Менюшка</h1>
+      <div class="products-grid">
+
+        <!-- трудяги  -->
+        <div class="product-card">
+          <img src="coffeCat.jpg" alt="коффи для трудяг" class="product-img">
+          <div class="product-body">
+            <h2 class="product-title">Коффи для трудяг</h2>
+            <p class="product-desc">Классика среди кото-рабов</p>
+            <p class="product-price">220 000 ₽</p>
+            <button class="buy-btn" data-id="1" data-name="коффи для трудяг" data-price="220000">Купить</button>
+          </div>
+        </div>
+
+        <!-- богатеи -->
+        <div class="product-card">
+          <img src="akyla.jpg" alt="коффи для богатеев" class="product-img">
+          <div class="product-body">
+            <h2 class="product-title">Коффи для богатеев</h2>
+            <p class="product-desc">Все для крутышей</p>
+            <p class="product-price">250 000₽</p>
+            <button class="buy-btn" data-id="2" data-name="коффи для богатеев" data-price="250000">Купить</button>
+          </div>
+        </div>
+
+        <!-- бомбо-эспрессо -->
+        <div class="product-card">
+          <img src="doomCat.jpg" alt="бомбо-эспрессо" class="product-img">
+          <div class="product-body">
+            <h2 class="product-title">Бомбо-эспрессо</h2>
+            <p class="product-desc">Крепкий и бодрящий</p>
+            <p class="product-price">180 000₽</p>
+            <button class="buy-btn" data-id="3" data-name="бомбо-эспрессо" data-price="180000">Купить</button>
+          </div>
+        </div>
+
+        <!-- Рppаф c пиписинкой -->
+        <div class="product-card">
+          <img src="robita.jpg" alt="Рppаф c пиписинкой" class="product-img">
+          <div class="product-body">
+            <h2 class="product-title">Рppаф c пиписинкой</h2>
+            <p class="product-desc">Все для утреннего несванения</p>
+            <p class="product-price">280 000₽</p>
+            <button class="buy-btn" data-id="4" data-name="Рppаф c пиписинкой" data-price="280000">Купить</button>
+          </div>
+        </div>
+
+        <!-- Американо школьный -->
+        <div class="product-card">
+          <img src="naCat.jpg" alt="Американо школьный" class="product-img">
+          <div class="product-body">
+            <h2 class="product-title">Американо школьный</h2>
+            <p class="product-desc">Вкус детства</p>
+            <p class="product-price">190 000₽</p>
+            <button class="buy-btn" data-id="5" data-name="Американо школьный" data-price="190000">Купить</button>
+          </div>
+        </div>
+
+        <!-- Тот самый кофе -->
+        <div class="product-card">
+          <img src="starCoffe.jpg" alt="Тот самый кофе" class="product-img">
+          <div class="product-body">
+            <h2 class="product-title">Тот самый кофе</h2>
+            <p class="product-desc">Кофе в украденном стакане</p>
+            <p class="product-price">270 000₽</p>
+            <button class="buy-btn" data-id="6" data-name="Тот самый кофе" data-price="270000">Купить</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- корзина -->
+    <aside class="cart">
+      <h2 class="cart-title">Корзина</h2>
+      <div id="cart-items" class="cart-items">
+        <p class="cart-empty">Корзина пуста</p>
+      </div>
+      <div class="cart-total">
+        Итого: <span id="cart-total">0</span> ₽
+      </div>
+      <button id="clear-cart" class="clear-btn">Очистить корзину</button>
+    </aside>
+
+  </main>
+
+  <script src="js.js"></script>
+</body>
+</html>
