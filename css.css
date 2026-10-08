@@ -45,6 +45,9 @@ body {
 }
 /*корзина в углу*/
 .cart-icon {
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-decoration: none;
   font-size: 16px;
   background: rgba(255, 255, 255, 0.1); /*прозрачность на 10%*/
   padding: 8px 16px; /*8 сверху/снизу, 16 по бокам*/
@@ -221,6 +224,7 @@ body {
   background: #faf6f2;
   color: #3b2416;
 }
+
 
 /* адаптив на планшете */
 @media (max-width: 1000px) {

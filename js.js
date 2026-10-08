@@ -1,7 +1,8 @@
 // место где все данные хранятся
 // это объект. Ключ — id товара, значение — объект с name, price, quantity.
 // пример после кликов: { "1": {name:"Капучино", price:220, quantity:2} }
-const cart = {};
+// 1. ЗАГРУЖАЕМ КОРЗИНУ ИЗ LOCALSTORAGE
+const cart = JSON.parse(localStorage.getItem('cart')) || {};
 
 // перечень элементов на странице
 const cartItemsEl = document.getElementById('cart-items');   // блок со списком
@@ -9,6 +10,10 @@ const cartTotalEl = document.getElementById('cart-total');   // сумма
 const cartCountEl = document.getElementById('cart-count');   // счётчик в шапке
 const buyButtons = document.querySelectorAll('.buy-btn');   // все кнопки "Купить"
 const clearBtn = document.getElementById('clear-cart');      // кнопка очистки
+
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
 
 // чтение каждой купить кнопки
 buyButtons.forEach(function (button) {
@@ -36,54 +41,71 @@ function addToCart(id, name, price) {
     };
   }
 
-  renderCart(); // перерисовываем корзину
+  saveCart();       // сохраняем в localStorage
+  updateCount();    // обновляем счётчик в шапке (работает везде)
+  renderCart();     // рисуем список (только если блок есть)
 }
 
-// сортировка корзины
+// ОБНОВЛЕНИЕ СЧЁТЧИКА В ШАПКЕ
+function updateCount() {
+  let count = 0;
+  for (const id in cart) {
+    count = count + cart[id].quantity;
+  }
+  // Обновляем, только если элемент есть на странице
+  if (cartCountEl) {
+    cartCountEl.textContent = count;
+  }
+}
+
+
+
+// 7. ОТРИСОВКА КОРЗИНЫ (только на cart.html)
 function renderCart() {
-  // очищаем блок перед перерисовкой
+  // Если блока корзины нет на странице — просто выходим
+  if (!cartItemsEl) return;
+
   cartItemsEl.innerHTML = '';
 
-  let total = 0;       // общая сумма
-  let count = 0;       // общее количество товаров
-  let isEmpty = true;  // флаг «корзина пуста»
+  let total = 0;
+  let isEmpty = true;
 
-  // перебираем все товары в корзине
-  // for...in проходит по ключам объекта
   for (const id in cart) {
-    isEmpty = false; //меняем флаг на корзина не пуста
-
-    const item = cart[id]; //достаёт товар из коробки cart по ключу id. Кладёт в переменную item
-    const subtotal = item.price * item.quantity; // стоимость позиции
+    isEmpty = false;
+    const item = cart[id];
+    const subtotal = item.price * item.quantity;
     total = total + subtotal;
-    count = count + item.quantity; // тек кол-во + общий счетчик
 
-    // создаём строчку для корзины
     const row = document.createElement('div');
-    row.className = 'cart-row';// помечаем div как cart-row, что бы css знал как его оформить
-    row.innerHTML = //Заполни этот div вот таким HTML-содержимым
+    row.className = 'cart-row';
+    row.innerHTML =
       '<span class="cart-row-name">' + item.name + ' × ' + item.quantity + '</span>' +
       '<span class="cart-row-price">' + subtotal + ' ₽</span>';
 
-    cartItemsEl.appendChild(row); //Возьми готовый div и вставь его внутрь блока корзины на странице
-    //cartItemsEl — это тот самый блок в HTML, куда должны попасть все строки. После appendChild строка внутри
+    cartItemsEl.appendChild(row);
   }
 
-  // если корзина пуста показываем "корзинка пуста"
   if (isEmpty) {
-    cartItemsEl.innerHTML = '<p class="cart-empty">Корзина пуста</p>'; // то что рисуем
+    cartItemsEl.innerHTML = '<p class="cart-empty">Корзина пуста</p>';
   }
 
-  // обновляем сумму и счётчик
-  cartTotalEl.textContent = total;
-  cartCountEl.textContent = count;
+  if (cartTotalEl) {
+    cartTotalEl.textContent = total;
+  }
 }
 
-// очистить корзину
-clearBtn.addEventListener('click', function () {
-  // Удаляем все ключи из объекта cart
-  for (const id in cart) {
-    delete cart[id];
-  }
-  renderCart();
-});
+// ОЧИСТКА КОРЗИНЫ (только на cart.html)
+if (clearBtn) {
+  clearBtn.addEventListener('click', function () {
+    for (const id in cart) {
+      delete cart[id];
+    }
+    saveCart();
+    updateCount();
+    renderCart();
+  });
+}
+
+// ПРИ ЗАГРУЗКЕ ЛЮБОЙ СТРАНИЦЫ
+updateCount();   // показываем счётчик
+renderCart();    // рисуем корзину (если блок есть)

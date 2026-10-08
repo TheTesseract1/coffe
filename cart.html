@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>корзина</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <img src="logo1.jpg" alt="logo-img"class ="logo-img">
+            <a href="main.html" class="logo">CoffeeCat</a>
+            <a href="cart.html" class="cart-icon">
+            Корзина: <span id="cart-count">0</span>
+            </a>
+        </div>
+    </header>
+    <main class="container">
+        <h1 class="section-title"> Your cart</h1>
+        <div class="cart-page">
+            <div id="cart-items" class="cart-items">
+                <p class="cart-empty">Cart is empty</p>
+            </div>
+
+        <div class="cart-total">
+            Total: <span id="cart-total">0</span> ₽
+        </div>
+
+        <div class="cart-actions">
+            <a href="main.html" class="back-btn">Back to menu</a>
+            <button id="clear-cart" class="clear-btn">Clear cart</button>
+        </div>
+        </div>
+    </main>
+
+    <script src="js.js"></script>
+</body>
+</html>
