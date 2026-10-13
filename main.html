@@ -22,79 +22,65 @@
   <main class="container main-layout">
 
     <section class="products">
-      <h1 class="section-title">Менюшка</h1>
+      <div class="cont">
+        <h1 class="section-title">Менюшка</h1>
+      <button class="open-filters-btn" id="open-filters">
+        <img src="fil.png" alt="fil" class="fil">
+      </button>
+    </div>
       <div class="products-grid">
-
-        <!-- трудяги  -->
-        <div class="product-card">
-          <img src="coffeCat.jpg" alt="коффи для трудяг" class="product-img">
-          <div class="product-body">
-            <h2 class="product-title">Коффи для трудяг</h2>
-            <p class="product-desc">Классика среди кото-рабов</p>
-            <p class="product-price">220 000 ₽</p>
-            <button class="buy-btn" data-id="1" data-name="коффи для трудяг" data-price="220000">Купить</button>
-          </div>
-        </div>
-
-        <!-- богатеи -->
-        <div class="product-card">
-          <img src="akyla.jpg" alt="коффи для богатеев" class="product-img">
-          <div class="product-body">
-            <h2 class="product-title">Коффи для богатеев</h2>
-            <p class="product-desc">Все для крутышей</p>
-            <p class="product-price">250 000₽</p>
-            <button class="buy-btn" data-id="2" data-name="коффи для богатеев" data-price="250000">Купить</button>
-          </div>
-        </div>
-
-        <!-- бомбо-эспрессо -->
-        <div class="product-card">
-          <img src="doomCat.jpg" alt="бомбо-эспрессо" class="product-img">
-          <div class="product-body">
-            <h2 class="product-title">Бомбо-эспрессо</h2>
-            <p class="product-desc">Крепкий и бодрящий</p>
-            <p class="product-price">180 000₽</p>
-            <button class="buy-btn" data-id="3" data-name="бомбо-эспрессо" data-price="180000">Купить</button>
-          </div>
-        </div>
-
-        <!-- Рppаф c пиписинкой -->
-        <div class="product-card">
-          <img src="robita.jpg" alt="Рppаф c пиписинкой" class="product-img">
-          <div class="product-body">
-            <h2 class="product-title">Рppаф c пиписинкой</h2>
-            <p class="product-desc">Все для утреннего несванения</p>
-            <p class="product-price">280 000₽</p>
-            <button class="buy-btn" data-id="4" data-name="Рppаф c пиписинкой" data-price="280000">Купить</button>
-          </div>
-        </div>
-
-        <!-- Американо школьный -->
-        <div class="product-card">
-          <img src="naCat.jpg" alt="Американо школьный" class="product-img">
-          <div class="product-body">
-            <h2 class="product-title">Американо школьный</h2>
-            <p class="product-desc">Вкус детства</p>
-            <p class="product-price">190 000₽</p>
-            <button class="buy-btn" data-id="5" data-name="Американо школьный" data-price="190000">Купить</button>
-          </div>
-        </div>
-
-        <!-- Тот самый кофе -->
-        <div class="product-card">
-          <img src="starCoffe.jpg" alt="Тот самый кофе" class="product-img">
-          <div class="product-body">
-            <h2 class="product-title">Тот самый кофе</h2>
-            <p class="product-desc">Кофе в украденном стакане</p>
-            <p class="product-price">270 000₽</p>
-            <button class="buy-btn" data-id="6" data-name="Тот самый кофе" data-price="270000">Купить</button>
-          </div>
-        </div>
 
       </div>
     </section>
 
   </main>
+
+  <!-- ===== МОДАЛЬНОЕ ОКНО ФИЛЬТРА ===== -->
+<div id="filter-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="close-filters">✕</button>
+    <h2 class="modal-title">Фильтр</h2>
+
+    <!-- Категории -->
+    <div class="filter-group">
+      <h3 class="filter-group-title">Категория</h3>
+      <div class="filter-options">
+        <label class="filter-option">
+          <input type="radio" name="category" value="all" checked>
+          <span>Все</span>
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="category" value="hot">
+          <span>Горячие</span>
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="category" value="cold">
+          <span>Холодные</span>
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="category" value="special">
+          <span>Авторские</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Цена -->
+    <div class="filter-group">
+      <h3 class="filter-group-title">Цена, ₽</h3>
+      <div class="price-inputs">
+        <input type="number" id="price-min" placeholder="от" min="0">
+        <span>—</span>
+        <input type="number" id="price-max" placeholder="до" min="0">
+      </div>
+    </div>
+
+    <!-- Кнопки -->
+    <div class="modal-actions">
+      <button id="reset-filters" class="reset-btn">Сбросить</button>
+      <button id="apply-filters" class="apply-btn">Применить</button>
+    </div>
+  </div>
+</div>
 
   <script src="js.js"></script>
 </body>
