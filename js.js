@@ -12,6 +12,8 @@ const products = [
 // пример после кликов: { "1": {name:"Капучино", price:220, quantity:2} }
 // 1. ЗАГРУЖАЕМ КОРЗИНУ ИЗ LOCALSTORAGE
 const cart = JSON.parse(localStorage.getItem('cart')) || {};
+// ИЗБРАННОЕ — массив id товаров
+const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
 // перечень элементов на странице
 const cartItemsEl = document.getElementById('cart-items');   // блок со списком
@@ -20,6 +22,8 @@ const cartCountEl = document.getElementById('cart-count');   // счётчик �
 const buyButtons = document.querySelectorAll('.buy-btn');   // все кнопки "Купить"
 const clearBtn = document.getElementById('clear-cart');      // кнопка очистки
 const productsGrid = document.querySelector('.products-grid');
+const searchInput = document.getElementById('search-input');
+const searchClear = document.getElementById('search-clear');
 
 // 4. КРАСИВЫЙ ФОРМАТ ЦЕНЫ (с пробелами)
 function formatPrice(n) {
@@ -141,13 +145,17 @@ function renderProducts() {
   const priceMin = Number(document.getElementById('price-min').value) || 0;
   const priceMax = Number(document.getElementById('price-max').value) || Infinity;
 
+  // Читаем поисковый запрос
+  const searchText = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
   productsGrid.innerHTML = '';
 
-  // Фильтруем по категории И цене
+  // Фильтруем по категории, цене И поиску
   const list = products.filter(function (p) {
     const byCategory = category === 'all' || p.category === category;
     const byPrice = p.price >= priceMin && p.price <= priceMax;
-    return byCategory && byPrice;
+    const bySearch = p.name.toLowerCase().includes(searchText);
+    return byCategory && byPrice && bySearch;
   });
 
   // Если ничего не найдено
@@ -157,18 +165,41 @@ function renderProducts() {
   }
 
   list.forEach(function (p) {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.innerHTML =
-      '<img src="' + p.img + '" alt="' + p.name + '" class="product-img">' +
-      '<div class="product-body">' +
-        '<h2 class="product-title">' + p.name + '</h2>' +
-        '<p class="product-desc">' + p.desc + '</p>' +
-        '<p class="product-price">' + formatPrice(p.price) + ' ₽</p>' +
-        '<button class="buy-btn" data-id="' + p.id + '" data-name="' + p.name + '" data-price="' + p.price + '">Купить</button>' +
-      '</div>';
-    productsGrid.appendChild(card);
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML =
+    '<button class="fav-btn" type="button" data-id="' + p.id + '">♡</button>' +
+    '<img src="' + p.img + '" alt="' + p.name + '" class="product-img">' +
+    '<div class="product-body">' +
+      '<h2 class="product-title">' + p.name + '</h2>' +
+      '<p class="product-desc">' + p.desc + '</p>' +
+      '<p class="product-price">' + formatPrice(p.price) + ' ₽</p>' +
+      '<button class="buy-btn" data-id="' + p.id + '" data-name="' + p.name + '" data-price="' + p.price + '">Купить</button>' +
+    '</div>';
+
+  // ---- Оживляем сердечко ----
+  const favBtn = card.querySelector('.fav-btn');
+
+  function updateHeart() {
+    if (isFavorite(p.id)) {
+      favBtn.classList.add('active');
+      favBtn.textContent = '♥';
+    } else {
+      favBtn.classList.remove('active');
+      favBtn.textContent = '♡';
+    }
+  }
+
+  favBtn.addEventListener('click', function (e) {
+    e.stopPropagation();   // чтобы клик не задел карточку
+    toggleFavorite(p.id);
+    updateHeart();
   });
+
+  updateHeart();   // сразу показываем актуальное состояние
+
+  productsGrid.appendChild(card);
+});
 
   attachBuyButtons();
 }
@@ -277,9 +308,61 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+// Проверка: товар в избранном?
+function isFavorite(id) {
+  return favorites.includes(id);
+}
+
+// Переключить: добавить/убрать
+function toggleFavorite(id) {
+  const index = favorites.indexOf(id);
+  if (index === -1) {
+    favorites.push(id);       // не в избранном → добавляем
+  } else {
+    favorites.splice(index, 1); // в избранном → убираем
+  }
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+// ==========================================
+// 10. ПОИСК ПО НАЗВАНИЮ
+// ==========================================
+if (searchInput) {
+  // Показываем/скрываем кнопку очистки
+  function updateClearButton() {
+    if (searchClear) {
+      if (searchInput.value.length > 0) {
+        searchClear.classList.add('visible');
+      } else {
+        searchClear.classList.remove('visible');
+      }
+    }
+  }
+
+  // При вводе — перерисовываем карточки
+  searchInput.addEventListener('input', function () {
+    updateClearButton();
+    renderProducts();
+  });
+
+  // Кнопка очистки
+  if (searchClear) {
+    searchClear.addEventListener('click', function () {
+      searchInput.value = '';
+      updateClearButton();
+      renderProducts();
+      searchInput.focus();   // курсор обратно в поле
+    });
+  }
+
+  // При загрузке — сразу проверяем состояние
+  updateClearButton();
+}
+
 // ПРИ ЗАГРУЗКЕ ЛЮБОЙ СТРАНИЦЫ
 updateCount();   // показываем счётчик
 renderCart();    // рисуем корзину (если блок есть)
 renderProducts();   // ← без аргумента, теперь читает фильтр из DOM
 
-//сделать фильтр + избранное
+//сделать поиск и перенести все данные в бд
+//админка, создание карточек, покупка, перенести все данные, заказы, статус заказа
