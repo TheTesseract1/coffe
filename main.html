@@ -12,6 +12,10 @@
     <div class="container header-inner">
       <img src="logo1.jpg" alt="logo-img"class ="logo-img">
       <a href="main.html" class="logo">CoffeeCat</a>
+
+      <a href="login.html" id="auth-link" class="cart-icon">Войти</a>
+    <a href="#" id="logout-link" class="cart-icon" style="display: none;">Выйти</a>
+
       <a href="cart.html" class="cart-icon">
         Корзина: <span id="cart-count">0</span>
       </a>
@@ -24,10 +28,15 @@
     <section class="products">
       <div class="cont">
         <h1 class="section-title">Менюшка</h1>
-      <button class="open-filters-btn" id="open-filters">
-        <img src="fil.png" alt="fil" class="fil">
-      </button>
-    </div>
+       <div style="display: flex; gap: 10px;">
+    <!-- Кнопка добавления (по умолчанию скрыта) -->
+    <button id="admin-add-btn" class="apply-btn" style="display: none; padding: 0px 15px;">+ Добавить</button>
+    
+    <button class="open-filters-btn" id="open-filters">
+      <img src="fil.png" alt="fil" class="fil">
+    </button>
+  </div>
+</div>
 <!--блок с поиском-->
   <div class="search-box">
     <input 
@@ -89,6 +98,45 @@
       <button id="reset-filters" class="reset-btn">Сбросить</button>
       <button id="apply-filters" class="apply-btn">Применить</button>
     </div>
+  </div>
+</div>
+
+<!-- ===== МОДАЛЬНОЕ ОКНО ДОБАВЛЕНИЯ ТОВАРА ===== -->
+<div id="add-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="close-add">✕</button>
+    <h2 class="modal-title">Новый товар</h2>
+
+    <div class="filter-group">
+      <label class="filter-group-title">Название</label>
+      <input type="text" id="new-name" class="search-input" placeholder="Название" style="padding-left: 15px;">
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-group-title">Описание</label>
+      <input type="text" id="new-desc" class="search-input" placeholder="Описание" style="padding-left: 15px;">
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-group-title">Цена</label>
+      <input type="number" id="new-price" class="search-input" placeholder="Цена" style="padding-left: 15px;">
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-group-title">Картинка</label>
+      <input type="text" id="new-img" class="search-input" placeholder="Картинка" style="padding-left: 15px;">
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-group-title">Категория</label>
+      <select id="new-category" class="search-input" style="padding-left: 15px; cursor: pointer;">
+        <option value="hot">Горячие</option>
+        <option value="cold">Холодные</option>
+        <option value="special">Авторские</option>
+      </select>
+    </div>
+
+    <button id="save-product-btn" class="apply-btn" style="width: 100%; margin-top: 20px;">Сохранить товар</button>
   </div>
 </div>
 

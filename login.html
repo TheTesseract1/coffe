@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход — CoffeeCat</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="main.html" class="logo">CoffeeCat</a>
+      <a href="main.html" class="cart-icon">Вернуться в меню</a>
+    </div>
+  </header>
+
+  <main class="container" style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+    
+    <div class="modal-content" style="max-width: 400px;">
+      <h2 class="modal-title">Вход в аккаунт</h2>
+      
+      <div class="filter-group">
+        <label class="filter-group-title">Логин</label>
+        <input type="text" id="login-username" class="search-input" placeholder="Введите логин" style="padding-left: 20px;">
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-group-title">Пароль</label>
+        <input type="password" id="login-password" class="search-input" placeholder="Введите пароль" style="padding-left: 20px;">
+      </div>
+
+      <p id="login-error" style="color: #e74c3c; font-size: 14px; margin-bottom: 15px; display: none;">
+        Неверный логин или пароль
+      </p>
+
+      <button id="login-btn" class="apply-btn" style="width: 100%; margin-top: 10px;">
+        Войти
+      </button>
+      </p>
+    </div>
+
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

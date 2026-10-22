@@ -1,11 +1,4 @@
-const products = [
-  { id: '1', name: 'Коффи для трудяг',   desc: 'Классика среди кото-рабов',    price: 220000, img: 'coffeCat.jpg',   category: 'hot' },
-  { id: '2', name: 'Коффи для богатеев', desc: 'Все для крутышей',             price: 250000, img: 'akyla.jpg',      category: 'hot' },
-  { id: '3', name: 'Бомбо-эспрессо',     desc: 'Крепкий и бодрящий',           price: 180000, img: 'doomCat.jpg',    category: 'hot' },
-  { id: '4', name: 'Рppаф c пиписинкой', desc: 'Все для утреннего несванения', price: 280000, img: 'robita.jpg',     category: 'cold' },
-  { id: '5', name: 'Американо школьный', desc: 'Вкус детства',                 price: 190000, img: 'naCat.jpg',      category: 'cold' },
-  { id: '6', name: 'Тот самый кофе',     desc: 'Кофе в украденном стакане',    price: 270000, img: 'starCoffe.jpg',  category: 'special' },
-];
+let products = [];
 
 // место где все данные хранятся
 // это объект. Ключ — id товара, значение — объект с name, price, quantity.
@@ -359,10 +352,121 @@ if (searchInput) {
   updateClearButton();
 }
 
-// ПРИ ЗАГРУЗКЕ ЛЮБОЙ СТРАНИЦЫ
-updateCount();   // показываем счётчик
-renderCart();    // рисуем корзину (если блок есть)
-renderProducts();   // ← без аргумента, теперь читает фильтр из DOM
+// ==========================================
+// 11. АВТОРИЗАЦИЯ И ШАПКА (Проверка токена)
+// ==========================================
+const authLink = document.getElementById('auth-link');
+const logoutLink = document.getElementById('logout-link');
+const savedToken = localStorage.getItem('token');
+const savedRole = localStorage.getItem('role');
+const savedName = localStorage.getItem('username');
+
+if (savedToken) {
+  // Если токен есть — мы авторизованы
+  if (authLink) {
+    authLink.style.display = 'none'; // Прячем "Войти"
+    authLink.textContent = `Привет, ${savedName}!`; // Меняем текст на всякий случай
+  }
+  if (logoutLink) {
+    logoutLink.style.display = 'block'; // Показываем "Выйти"
+    // При клике на "Выйти" — стираем токен и перезагружаем страницу
+    logoutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('username');
+      window.location.reload();
+    });
+  }
+} else {
+  // Если токена нет — мы гость
+  if (authLink) {
+    authLink.style.display = 'block';
+    authLink.textContent = 'Войти';
+  }
+  if (logoutLink) {
+    logoutLink.style.display = 'none';
+  }
+}
+
+// Загружаем товары с сервера
+async function loadProducts() {
+  try {
+    const response = await fetch('http://localhost:3000/api/products');
+    products = await response.json();
+    renderProducts(); // Рисуем карточки, когда данные пришли
+  } catch (error) {
+    console.error('Ошибка загрузки товаров:', error);
+    productsGrid.innerHTML = '<p class="no-results">Сервер не отвечает. Проверь, запущен ли Node.js</p>';
+  }
+}
+
+// ==========================================
+// 12. ЛОГИКА АДМИНКИ (Добавление товаров)
+// ==========================================
+const adminAddBtn = document.getElementById('admin-add-btn');
+const addModal = document.getElementById('add-modal');
+const closeAddBtn = document.getElementById('close-add');
+const saveProductBtn = document.getElementById('save-product-btn');
+
+// Если мы админ — показываем кнопку
+if (localStorage.getItem('role') === 'admin' && adminAddBtn) {
+  adminAddBtn.style.display = 'block';
+
+  // Открытие окна
+  adminAddBtn.addEventListener('click', () => addModal.classList.add('open'));
+  
+  // Закрытие окна
+  closeAddBtn.addEventListener('click', () => addModal.classList.remove('open'));
+  addModal.addEventListener('click', (e) => {
+    if (e.target === addModal) addModal.classList.remove('open');
+  });
+
+  // Сохранение товара
+  saveProductBtn.addEventListener('click', async () => {
+    const name = document.getElementById('new-name').value.trim();
+    const description = document.getElementById('new-desc').value.trim();
+    const price = Number(document.getElementById('new-price').value);
+    const img = document.getElementById('new-img').value.trim();
+    const category = document.getElementById('new-category').value;
+
+    if (!name || !price) {
+      alert("Название и цена обязательны!");
+      return;
+    }
+
+    // Берем сохраненный бейджик (токен)
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch('http://localhost:3000/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token // Передаем бейджик серверу!
+        },
+        body: JSON.stringify({ name, description, price, img: img || 'coffeCat.jpg', category })
+      });
+
+      if (response.ok) {
+        alert("Товар добавлен!");
+        addModal.classList.remove('open');
+        loadProducts(); // Перезагружаем список товаров на странице
+      } else {
+        const data = await response.json();
+        alert("Ошибка: " + (data.error || "Не удалось добавить"));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Ошибка сервера");
+    }
+  });
+}
+
+// Старт приложения
+updateCount();
+renderCart();
+loadProducts(); // Запускаем загрузку товаров
 
 //сделать поиск и перенести все данные в бд
 //админка, создание карточек, покупка, перенести все данные, заказы, статус заказа
